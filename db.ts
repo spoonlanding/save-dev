@@ -5,7 +5,7 @@ const db = new AWS.DynamoDB({
   endpoint: 'http://localhost:8000'
 });
 
-export const readPackage = (pkg: string | RawPackage): Promise<Package> => {
+export const getPackage = (pkg: string | RawPackage): Promise<Package> => {
 	const pkgName = typeof pkg === 'string' ? pkg : pkg.name;
 	const params = {
 		Key: {
@@ -29,7 +29,7 @@ export const readPackage = (pkg: string | RawPackage): Promise<Package> => {
 	});
 }
 
-export const writePackage = (pkg: Package): Promise<string> => {
+export const createPackage = (pkg: Package): Promise<string> => {
 	const params = {
 		Item: {
 			'name': {

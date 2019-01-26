@@ -1,18 +1,18 @@
 import { Package } from '../types';
-import { writePackage, readPackage } from '../db';
+import { createPackage, getPackage } from '../db';
 import checkIfDevDependency from './checkIfDevDependency';
 import fetchPackage from './fetchPackage';
 
 export default function (pkgName: string): Promise<Package> {
 	
 	return new Promise((resolve, reject) => {
-		readPackage(pkgName)
+		getPackage(pkgName)
 			.then(resolve)
 			.catch((_e: Error) => {
 				fetchPackage(pkgName)
 					.then(checkIfDevDependency)
 					.then((pkg: Package) => {
-						writePackage(pkg);
+						createPackage(pkg);
 						resolve(pkg);
 					})
 					.catch(reject)
