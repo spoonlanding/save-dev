@@ -2,6 +2,7 @@
   "compilerOptions": {
     "sourceMap": true,
     "target": "es6",
+    // "experimentalDecorators": true,
     "lib": [
       "esnext"
     ],

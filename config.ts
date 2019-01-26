@@ -1,0 +1,1 @@
+export const API_ENDPOINT = process.env.NODE_ENV === 'production' ? '' : 'localhost:3000/analyzePackage?pkg='

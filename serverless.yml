@@ -17,6 +17,7 @@ functions:
       - http:
           method: get
           path: analyzePackage
+          cors: true
   getPackageType:
     handler: handler.getPackageType
     events:

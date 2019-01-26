@@ -5,13 +5,17 @@ import { Package } from './types';
 export const analyzePackage: Handler = (event: APIGatewayEvent, context: Context, cb: Callback) => {
   // console.log(event)c
   const pkgName = event.queryStringParameters['pkg'];
+
+  const respond = (body: string | Error, statusCode: number) => cb(null, {
+    statusCode,
+    body,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
   
   getPackage(pkgName)
-    .then((pkg: Package) => cb(null, { statusCode: 200, body: JSON.stringify(pkg) }))
-    .catch((err: Error) => cb(null, { statusCode: 403, body: err }));
-
-}
-
-export const getPackageType: Handler = (event: APIGatewayEvent, context: Context, cb: Callback) => {
+    .then((pkg: Package) => respond(JSON.stringify(pkg), 200))
+    .catch((err: Error) => respond(err, 403));
 
 }
