@@ -17,7 +17,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 import { Package } from '../../../types';
 
-export default{
+@Component({
   components: {
     HelloWorld,
   },
@@ -44,7 +44,8 @@ export default{
       })
     }
   }
-}
+})
+export default class Home extends Vue {}
 </script>
 
 <style lang="scss">

@@ -3,9 +3,8 @@ import resolvePackage from './lib/resolvePackage';
 import { Package } from './types';
 
 export const analyzePackage: Handler = (event: APIGatewayEvent, context: Context, cb: Callback) => {
-  // console.log(event)c
+  
   const pkgName = event.queryStringParameters['pkg'];
-
   const respond = (body: string | Error, statusCode: number) => cb(null, {
     statusCode,
     body,
