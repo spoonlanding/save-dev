@@ -1,6 +1,5 @@
 import { APIGatewayEvent, Callback, Context, Handler } from 'aws-lambda';
-import resolvePackage from './lib/resolvePackage';
-import { Package } from './types';
+import Package from './lib/Package';
 
 export const analyzePackage: Handler = (event: APIGatewayEvent, context: Context, cb: Callback) => {
   
@@ -10,9 +9,10 @@ export const analyzePackage: Handler = (event: APIGatewayEvent, context: Context
     body,
     headers: { 'Access-Control-Allow-Origin': '*' },
   });
-  
-  resolvePackage(pkgName)
-    .then((pkg: Package) => respond(JSON.stringify(pkg), 200))
+
+  const pkg = new Package(pkgName);
+  pkg.init()
+    .then((pkg: Package) => respond(pkg.serialize(), 200))
     .catch((err: Error) => respond(err, 403));
 
 }

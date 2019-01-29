@@ -1,8 +1,9 @@
 import * as request from 'request';
+import { NPMPackageRegistry } from '../types';
 
 const OPTS: request.CoreOptions = { json: true };
 
-const fetchBackupReadme = (pkg): Promise<string> => new Promise((resolve, reject) => {
+export const fetchBackupReadme = (pkg: NPMPackageRegistry): Promise<string> => new Promise((resolve, reject) => {
 	const repoURL = pkg.repository.url;
 	const readmeUrl = repoURL
 		.replace('github', 'raw.githubusercontent')
@@ -15,18 +16,13 @@ const fetchBackupReadme = (pkg): Promise<string> => new Promise((resolve, reject
 	});
 });
 
-export default (pkgName: string) => new Promise((resolve, reject) => {
+export const fetchPackage = (pkgName: string): Promise<NPMPackageRegistry> => new Promise((resolve, reject) => {
 	const npmURL = `https://registry.npmjs.org/${pkgName}`;
 
 	console.log(`fetching pkg ${pkgName}`);
 	
 	request(npmURL, OPTS, (err, res, body) => {
 		if (!!err) reject('Error fetching package');
-		else fetchBackupReadme(body).then(backupReadme => {
-			resolve({
-				name: pkgName,
-				readme: (body.readme || '').concat(backupReadme)
-			});
-		})
+		else resolve(body);
 	});
 })
