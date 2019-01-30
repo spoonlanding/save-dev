@@ -16,10 +16,10 @@ export default class Package {
 		this.analyzeName();
 	}
 
-	public async init(): Promise<Package> {
+	public async init(cb: any): Promise<Package> {
 		await this.loadFromDB();
 		if (this.isDev !== null) return this;
-		await this.fetch();
+		await this.fetchData();
 		this.analyze();
 		this.save();
 		this.cleanup();
@@ -31,12 +31,11 @@ export default class Package {
 	}
 
 	private analyze(): boolean {
-		this.isDev = analyzeReadme(this.readmeData)
+		this.isDev = analyzeReadme(this.readmeData);
 		return this.isDev;
 	}
 
-
-	private async fetch(): Promise<void> {
+	private async fetchData(): Promise<void> {
 		this.registryData = await fetchPackage(this.name);
 		const backupReadme = await fetchBackupReadme(this.registryData);
 		this.readmeData = this.registryData.readme.concat(backupReadme);

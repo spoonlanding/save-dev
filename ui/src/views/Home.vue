@@ -9,6 +9,8 @@
       class="pkg-name">
       {{ pkg.name }} is a {{ pkg.type }} dependency
     </h3>
+    <kbd>{{ installCommands.npm }}</kbd>
+    <kbd>{{ installCommands.yarn }}</kbd>
   </div>
 </template>
 
@@ -23,7 +25,7 @@ import { Package } from '../../../types';
   },
   data() {
     return {
-      query: 'babel-jest'
+      query: 'babel-jest',
     }
   },
   computed: {
@@ -33,6 +35,13 @@ import { Package } from '../../../types';
         name,
         type: isDev ? 'DEV' : 'PROD',
         isDefined: name !== '' && name !== undefined && isDev !== null
+      }
+    },
+    installCommands() {
+      const { isDev } = this.$store.state.pkg;
+      return {
+        npm: `npm install -save${isDev ? '-dev' : ''}`,
+        yarn: `yarn add${isDev ? ' --dev' : ''}`
       }
     }
   },
@@ -45,7 +54,8 @@ import { Package } from '../../../types';
     }
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+}
 </script>
 
 <style lang="scss">
